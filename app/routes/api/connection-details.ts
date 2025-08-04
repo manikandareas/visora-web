@@ -3,7 +3,6 @@ import {
 	type AccessTokenOptions,
 	type VideoGrant,
 } from "livekit-server-sdk";
-import type { Route } from "./+types/connection-details";
 
 const API_KEY = process.env.LIVEKIT_API_KEY;
 const API_SECRET = process.env.LIVEKIT_API_SECRET;
