@@ -1,17 +1,24 @@
+import { App } from "~/components/app";
+import { getAppConfig } from "~/lib/utils";
 import type { Route } from "./+types/home";
-import { Welcome } from "../welcome/welcome";
 
-export function meta({}: Route.MetaArgs) {
-  return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
-  ];
+export function meta() {
+	return [
+		{ title: "New React Router App" },
+		{ name: "description", content: "Welcome to React Router!" },
+	];
 }
 
-export function loader({ context }: Route.LoaderArgs) {
-  return { message: "Hello from Vercel" };
+export async function loader(args: Route.LoaderArgs) {
+	const hdrs = args.request.headers;
+
+	const appConfig = await getAppConfig(hdrs);
+
+	return { appConfig };
 }
 
 export default function Home({ loaderData }: Route.ComponentProps) {
-  return <Welcome message={loaderData.message} />;
+	const appConfig = loaderData.appConfig;
+
+	return <App appConfig={appConfig} />;
 }
