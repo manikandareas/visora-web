@@ -1,4 +1,4 @@
-import { WarningIcon } from "@phosphor-icons/react/dist/ssr";
+import { LucideMessageCircleWarning } from "lucide-react";
 import { Toaster as Sonner, type ToasterProps } from "sonner";
 
 const Toaster = ({ ...props }: ToasterProps) => {
@@ -7,7 +7,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
 			className="toaster group"
 			position="top-center"
 			icons={{
-				warning: <WarningIcon weight="bold" />,
+				warning: <LucideMessageCircleWarning />,
 			}}
 			style={
 				{

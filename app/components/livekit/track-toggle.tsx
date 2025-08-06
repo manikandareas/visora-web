@@ -1,13 +1,6 @@
 import type { useTrackToggle } from "@livekit/components-react";
-import {
-	MicrophoneIcon,
-	MicrophoneSlashIcon,
-	MonitorArrowUpIcon,
-	SpinnerIcon,
-	VideoCameraIcon,
-	VideoCameraSlashIcon,
-} from "@phosphor-icons/react/dist/ssr";
 import { Track } from "livekit-client";
+import { Loader, Mic, MicOff, MonitorUp, Video, VideoOff } from "lucide-react";
 import * as React from "react";
 import { cn } from "~/lib/utils";
 import { Toggle } from "../ui/toggle";
@@ -23,16 +16,16 @@ function getSourceIcon(
 	pending = false,
 ) {
 	if (pending) {
-		return SpinnerIcon;
+		return Loader;
 	}
 
 	switch (source) {
 		case Track.Source.Microphone:
-			return enabled ? MicrophoneIcon : MicrophoneSlashIcon;
+			return enabled ? Mic : MicOff;
 		case Track.Source.Camera:
-			return enabled ? VideoCameraIcon : VideoCameraSlashIcon;
+			return enabled ? Video : VideoOff;
 		case Track.Source.ScreenShare:
-			return MonitorArrowUpIcon;
+			return MonitorUp;
 		default:
 			return React.Fragment;
 	}
@@ -54,7 +47,7 @@ export function TrackToggle({
 			className={cn(className)}
 			{...props}
 		>
-			<IconComponent weight="bold" className={cn(pending && "animate-spin")} />
+			<IconComponent className={cn(pending && "animate-spin")} />
 			{props.children}
 		</Toggle>
 	);

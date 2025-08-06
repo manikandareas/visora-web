@@ -2,11 +2,8 @@ import {
 	BarVisualizer,
 	useRemoteParticipants,
 } from "@livekit/components-react";
-import {
-	ChatTextIcon,
-	PhoneDisconnectIcon,
-} from "@phosphor-icons/react/dist/ssr";
 import { Track } from "livekit-client";
+import { MessageCircleMore, PhoneOff } from "lucide-react";
 import * as React from "react";
 import { useCallback } from "react";
 import { ChatInput } from "~/components/livekit/chat/chat-input";
@@ -271,7 +268,7 @@ export function AgentControlBar({
 							disabled={!isAgentAvailable}
 							className="aspect-square h-full"
 						>
-							<ChatTextIcon weight="bold" />
+							<MessageCircleMore />
 						</Toggle>
 					)}
 				</div>
@@ -282,7 +279,7 @@ export function AgentControlBar({
 						disabled={isDisconnecting}
 						className="font-mono"
 					>
-						<PhoneDisconnectIcon weight="bold" />
+						<PhoneOff />
 						<span className="hidden md:inline">END CALL</span>
 						<span className="inline md:hidden">END</span>
 					</Button>

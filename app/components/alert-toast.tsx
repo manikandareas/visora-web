@@ -1,6 +1,6 @@
 "use client";
 
-import { WarningIcon } from "@phosphor-icons/react/dist/ssr";
+import { LucideMessageCircleWarning } from "lucide-react";
 import type { ReactNode } from "react";
 import { toast as sonnerToast } from "sonner";
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
@@ -25,7 +25,7 @@ function AlertToast(props: ToastProps) {
 
 	return (
 		<Alert onClick={() => sonnerToast.dismiss(id)} className="bg-accent">
-			<WarningIcon weight="bold" />
+			<LucideMessageCircleWarning />
 			<AlertTitle>{title}</AlertTitle>
 			{description && <AlertDescription>{description}</AlertDescription>}
 		</Alert>
