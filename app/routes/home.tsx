@@ -1,7 +1,8 @@
-import { use } from "react";
+import React from "react";
+import { Await } from "react-router";
 import { App } from "~/components/app";
-import type { AppConfig } from "~/lib/types";
 import { getAppConfig } from "~/lib/utils";
+import type { Route } from "./+types/home";
 
 export function meta() {
 	return [
@@ -10,9 +11,18 @@ export function meta() {
 	];
 }
 
-export default function Home() {
+export async function loader() {
 	const headers = new Headers();
-	const appConfig = use(getAppConfig(headers));
+	const appConfig = getAppConfig(headers);
+	return { appConfig };
+}
 
-	return <App appConfig={appConfig as AppConfig} />;
+export default function Home({ loaderData }: Route.ComponentProps) {
+	const appConfig = loaderData?.appConfig;
+
+	return (
+		<React.Suspense fallback={<div>Loading...</div>}>
+			<Await resolve={appConfig}>{(value) => <App appConfig={value} />}</Await>
+		</React.Suspense>
+	);
 }
