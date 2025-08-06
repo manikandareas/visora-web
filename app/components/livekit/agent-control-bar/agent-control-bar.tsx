@@ -1,20 +1,18 @@
 import {
 	BarVisualizer,
-	useMediaDeviceSelect,
 	useRemoteParticipants,
 } from "@livekit/components-react";
 import {
 	ChatTextIcon,
 	PhoneDisconnectIcon,
 } from "@phosphor-icons/react/dist/ssr";
-import type { RealtimePostgresChangesPayload } from "@supabase/supabase-js";
 import { Track } from "livekit-client";
 import * as React from "react";
 import { useCallback } from "react";
 import { ChatInput } from "~/components/livekit/chat/chat-input";
 import { Button } from "~/components/ui/button";
 import { Toggle } from "~/components/ui/toggle";
-import supabase, { getSession } from "~/lib/supabase-client";
+import supabase from "~/lib/supabase-client";
 import type { AppConfig } from "~/lib/types";
 import { cn } from "~/lib/utils";
 import { DeviceSelect } from "../device-select";
@@ -25,11 +23,13 @@ import {
 } from "./hooks/use-agent-control-bar";
 
 type CameraState = {
+	action: "on" | "off" | "switch";
 	camera_type: "user" | "environment";
-	id: string;
+	event_id: string;
 	is_enabled: boolean;
-	session_id: string;
-	updated_at: string;
+	message: string;
+	timestamp: string;
+	new_camera_type?: "user" | "environment";
 };
 
 export interface AgentControlBarProps
@@ -118,19 +118,28 @@ export function AgentControlBar({
 	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	React.useEffect(() => {
 		const cameraStateChannel = supabase
-			.channel("camera-state")
+			.channel("visora_agent")
 			.on(
-				"postgres_changes",
+				"broadcast",
 				{
-					event: "*",
-					schema: "public",
-					table: "camera_states",
+					event: "camera_states",
 				},
 				(payload) => {
-					console.log("Camera state received:", payload.new);
-					const data = payload.new as CameraState;
-					cameraToggle.toggle(data.is_enabled);
-					setCameraType(data.camera_type);
+					console.log("Camera state received from broadcast:", payload);
+					const data = payload.payload as CameraState;
+
+					if (data.action === "on") {
+						cameraToggle.toggle(true);
+					} else if (data.action === "off") {
+						cameraToggle.toggle(false);
+					} else if (data.action === "switch" && data.new_camera_type) {
+						cameraToggle.toggle(data.is_enabled);
+						setCameraType((past) =>
+							past === data.new_camera_type
+								? past
+								: (data.new_camera_type as "user" | "environment"),
+						);
+					}
 				},
 			)
 			.subscribe();

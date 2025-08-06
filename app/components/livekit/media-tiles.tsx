@@ -84,7 +84,7 @@ const classNames = {
 	// layout: Column 2 / Row 1
 	// align: x-start y-center
 	secondTileChatOpen: [
-		"col-start-1 row-start-1",
+		"col-start-2 row-start-1",
 		"self-center justify-self-start",
 	],
 	// Second tile
@@ -149,12 +149,7 @@ export function MediaTiles({ chatOpen }: MediaTilesProps) {
 	return (
 		<div className="pointer-events-none fixed inset-x-0 top-8 bottom-32 z-50 md:top-12 md:bottom-40">
 			<div className="relative mx-auto h-full max-w-2xl px-4 md:px-0">
-				<div
-					className={cn(
-						"flex h-full w-full flex-col-reverse items-center justify-center md:gap-12",
-					)}
-				>
-					{/* <div className={cn(classNames.grid)}> */}
+				<div className={cn(classNames.grid)}>
 					{/* agent */}
 					<div
 						className={cn([
@@ -180,9 +175,7 @@ export function MediaTiles({ chatOpen }: MediaTilesProps) {
 									transition={agentLayoutTransition as Transition}
 									state={agentState}
 									audioTrack={agentAudioTrack}
-									className={cn(
-										chatOpen ? "h-[90px]" : "h-[60px] w-full md:h-fit",
-									)}
+									className={cn(chatOpen ? "h-[90px]" : "h-auto w-full")}
 								/>
 							)}
 							{isAvatar && (
@@ -191,8 +184,8 @@ export function MediaTiles({ chatOpen }: MediaTilesProps) {
 									key="avatar"
 									layoutId="avatar"
 									{...animationProps}
-									animate={avatarAnimate as TargetAndTransition}
-									transition={avatarLayoutTransition as Transition}
+									animate={agentAnimate as TargetAndTransition}
+									transition={agentLayoutTransition as Transition}
 									videoTrack={agentVideoTrack}
 									className={cn(
 										chatOpen
@@ -206,10 +199,9 @@ export function MediaTiles({ chatOpen }: MediaTilesProps) {
 
 					<div
 						className={cn([
-							// "grid",
-							// !chatOpen && classNames.secondTileChatOpen,
-							// // !chatOpen && classNames.secondTileChatClosed,
-							"flex items-center justify-center",
+							"grid",
+							chatOpen && classNames.secondTileChatOpen,
+							!chatOpen && classNames.secondTileChatClosed,
 						])}
 					>
 						{/* camera */}
@@ -227,7 +219,7 @@ export function MediaTiles({ chatOpen }: MediaTilesProps) {
 											delay: chatOpen ? 0 : 0.15,
 										} as Transition
 									}
-									className="aspect-[9/12] w-full md:aspect-auto"
+									className="h-[90px]"
 								/>
 							)}
 							{/* screen */}
