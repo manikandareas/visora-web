@@ -61,7 +61,7 @@ export function AgentControlBar({
 	const participants = useRemoteParticipants();
 	const [isSendingMessage, setIsSendingMessage] = React.useState(false);
 	const [cameraType, setCameraType] = React.useState<"user" | "environment">(
-		"user",
+		"environment",
 	);
 
 	const isAgentAvailable = participants.some((p) => p.isAgent);
